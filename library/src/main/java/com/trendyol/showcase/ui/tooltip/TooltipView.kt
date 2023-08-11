@@ -72,8 +72,15 @@ class TooltipView @JvmOverloads constructor(
             with(imageViewTopArrow) {
                 visibility = tooltipViewState.getTopArrowVisibility()
                 setTint(tooltipViewState.getBackgroundColor())
-                layoutMarginStart(tooltipViewState.arrowMargin, tooltipViewState.getArrowPercentage())
-                setImageDrawable(ContextCompat.getDrawable(context, tooltipViewState.getTopArrowResource()))
+                val drawable = requireNotNull(
+                    ContextCompat.getDrawable(
+                        context,
+                        tooltipViewState.getTopArrowResource()
+                    )
+                )
+                val imageStartMargin = tooltipViewState.arrowMargin - (drawable.intrinsicWidth) / 2
+                layoutMarginStart(imageStartMargin, tooltipViewState.getArrowPercentage())
+                setImageDrawable(drawable)
             }
             layoutContents.isClickable = tooltipViewState.isShowcaseViewClickable()
             cardContent.visibility = tooltipViewState.getContentVisibility()
@@ -91,8 +98,15 @@ class TooltipView @JvmOverloads constructor(
             with(imageViewBottomArrow) {
                 visibility = tooltipViewState.getBottomArrowVisibility()
                 setTint(tooltipViewState.getBackgroundColor())
-                layoutMarginStart(tooltipViewState.arrowMargin, tooltipViewState.getArrowPercentage())
-                setImageDrawable(ContextCompat.getDrawable(context, tooltipViewState.getBottomArrowResource()))
+                val drawable = requireNotNull(
+                    ContextCompat.getDrawable(
+                        context,
+                        tooltipViewState.getBottomArrowResource()
+                    )
+                )
+                val imageStartMargin = tooltipViewState.arrowMargin - (drawable.intrinsicWidth) / 2
+                layoutMarginStart(imageStartMargin, tooltipViewState.getArrowPercentage())
+                setImageDrawable(drawable)
             }
         }
     }

@@ -59,10 +59,4 @@ internal object TooltipFieldUtil {
             (screenHeight - top + diff).toInt()
         }
     }
-
-    fun calculateArrowMargin(horizontalCenter: Float, density: Float): Int {
-        val arrowHalfWidth = (15 * density)
-
-        return (horizontalCenter - arrowHalfWidth).toInt()
-    }
 }

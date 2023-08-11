@@ -88,16 +88,13 @@ class ShowcaseView @JvmOverloads constructor(
 
         listenClickEvents()
         val arrowPosition = TooltipFieldUtil.decideArrowPosition(showcaseModel, resources.getHeightInPixels())
-        val arrowMargin = TooltipFieldUtil.calculateArrowMargin(
-            horizontalCenter = showcaseModel.horizontalCenter(),
-            density = resources.getDensity()
-        )
+        val arrowStartMargin = showcaseModel.horizontalCenter().toInt()
         val marginFromBottom = getMarginFromBottom(showcaseModel, arrowPosition)
         val showcaseViewState = ShowcaseViewState(margin = marginFromBottom)
         val tooltipViewState = TooltipViewState(
             showcaseModel = showcaseModel,
             arrowPosition = arrowPosition,
-            arrowMargin = arrowMargin
+            arrowMargin = arrowStartMargin
         )
         setCustomContent()
 
