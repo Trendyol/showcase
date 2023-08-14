@@ -3,11 +3,13 @@ package com.trendyol.showcase.ui.tooltip
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.trendyol.showcase.R
@@ -74,10 +76,15 @@ class TooltipView @JvmOverloads constructor(
                 visibility = tooltipViewState.getTopArrowVisibility()
                 setTint(tooltipViewState.getBackgroundColor())
 
+                val drawable: Drawable = requireNotNull(
+                    ContextCompat.getDrawable(
+                        context,
+                        tooltipViewState.getTopArrowResource()
+                    )
+                )
                 val imageStartMargin = calculateStartMarginForArrow(
                     tooltipViewState.arrowMargin,
-                    tooltipViewState.getTopArrowResource(),
-                    context
+                    drawable
                 )
                 layoutMarginStart(imageStartMargin, tooltipViewState.getArrowPercentage())
                 setImageDrawable(drawable)
@@ -98,10 +105,15 @@ class TooltipView @JvmOverloads constructor(
             with(imageViewBottomArrow) {
                 visibility = tooltipViewState.getBottomArrowVisibility()
                 setTint(tooltipViewState.getBackgroundColor())
+                val drawable: Drawable = requireNotNull(
+                    ContextCompat.getDrawable(
+                        context,
+                        tooltipViewState.getBottomArrowResource()
+                    )
+                )
                 val imageStartMargin = calculateStartMarginForArrow(
                     tooltipViewState.arrowMargin,
-                    tooltipViewState.getBottomArrowResource(),
-                    context
+                    drawable
                 )
                 layoutMarginStart(imageStartMargin, tooltipViewState.getArrowPercentage())
                 setImageDrawable(drawable)

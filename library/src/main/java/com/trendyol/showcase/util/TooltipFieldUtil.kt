@@ -3,7 +3,6 @@ package com.trendyol.showcase.util
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
 import com.trendyol.showcase.showcase.ShowcaseModel
 import com.trendyol.showcase.ui.tooltip.AbsoluteArrowPosition
 import com.trendyol.showcase.ui.tooltip.ArrowPosition
@@ -72,8 +71,7 @@ internal object TooltipFieldUtil {
         }
     }
 
-    fun calculateStartMarginForArrow(arrowMargin: Int, resource: Int, context: Context): Int {
-        val drawable: Drawable = requireNotNull(ContextCompat.getDrawable(context, resource))
-        return arrowMargin - (drawable.intrinsicWidth) / 2
+    fun calculateStartMarginForArrow(arrowMargin: Int, resource: Drawable): Int {
+        return arrowMargin - (resource.intrinsicWidth) / 2
     }
 }
