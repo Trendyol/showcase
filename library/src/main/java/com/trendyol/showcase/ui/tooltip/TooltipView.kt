@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.trendyol.showcase.R
@@ -21,13 +20,15 @@ import com.trendyol.showcase.ui.setTint
 import com.trendyol.showcase.ui.slidablecontent.SlidableContent
 import com.trendyol.showcase.ui.slidablecontent.SlidableContentAdapter
 import com.trendyol.showcase.util.ActionType
+import com.trendyol.showcase.util.TooltipFieldUtil.calculateStartMarginForArrow
 
 class TooltipView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
 ) : ConstraintLayout(context, attrs) {
 
-    private val binding = LayoutTooltipBinding.inflate(LayoutInflater.from(context), rootView as ViewGroup)
+    private val binding =
+        LayoutTooltipBinding.inflate(LayoutInflater.from(context), rootView as ViewGroup)
     private var clickListener: ((ActionType, Int) -> (Unit))? = null
 
     init {
@@ -72,13 +73,12 @@ class TooltipView @JvmOverloads constructor(
             with(imageViewTopArrow) {
                 visibility = tooltipViewState.getTopArrowVisibility()
                 setTint(tooltipViewState.getBackgroundColor())
-                val drawable = requireNotNull(
-                    ContextCompat.getDrawable(
-                        context,
-                        tooltipViewState.getTopArrowResource()
-                    )
+
+                val imageStartMargin = calculateStartMarginForArrow(
+                    tooltipViewState.arrowMargin,
+                    tooltipViewState.getTopArrowResource(),
+                    context
                 )
-                val imageStartMargin = tooltipViewState.arrowMargin - (drawable.intrinsicWidth) / 2
                 layoutMarginStart(imageStartMargin, tooltipViewState.getArrowPercentage())
                 setImageDrawable(drawable)
             }
@@ -98,13 +98,11 @@ class TooltipView @JvmOverloads constructor(
             with(imageViewBottomArrow) {
                 visibility = tooltipViewState.getBottomArrowVisibility()
                 setTint(tooltipViewState.getBackgroundColor())
-                val drawable = requireNotNull(
-                    ContextCompat.getDrawable(
-                        context,
-                        tooltipViewState.getBottomArrowResource()
-                    )
+                val imageStartMargin = calculateStartMarginForArrow(
+                    tooltipViewState.arrowMargin,
+                    tooltipViewState.getBottomArrowResource(),
+                    context
                 )
-                val imageStartMargin = tooltipViewState.arrowMargin - (drawable.intrinsicWidth) / 2
                 layoutMarginStart(imageStartMargin, tooltipViewState.getArrowPercentage())
                 setImageDrawable(drawable)
             }
