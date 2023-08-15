@@ -1,6 +1,8 @@
 package com.trendyol.showcase.util
 
+import android.content.Context
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import com.trendyol.showcase.showcase.ShowcaseModel
 import com.trendyol.showcase.ui.tooltip.AbsoluteArrowPosition
 import com.trendyol.showcase.ui.tooltip.ArrowPosition
@@ -9,14 +11,23 @@ import kotlin.math.sqrt
 
 internal object TooltipFieldUtil {
 
-    fun decideArrowPosition(showcaseModel: ShowcaseModel, screenHeight: Int): AbsoluteArrowPosition =
+    fun decideArrowPosition(
+        showcaseModel: ShowcaseModel,
+        screenHeight: Int
+    ): AbsoluteArrowPosition =
         when (showcaseModel.arrowPosition) {
             ArrowPosition.UP -> AbsoluteArrowPosition.UP
             ArrowPosition.DOWN -> AbsoluteArrowPosition.DOWN
-            ArrowPosition.AUTO -> calculateArrowPosition(showcaseModel.verticalCenter(), screenHeight)
+            ArrowPosition.AUTO -> calculateArrowPosition(
+                showcaseModel.verticalCenter(),
+                screenHeight
+            )
         }
 
-    private fun calculateArrowPosition(verticalCenter: Float, screenHeight: Int): AbsoluteArrowPosition =
+    private fun calculateArrowPosition(
+        verticalCenter: Float,
+        screenHeight: Int
+    ): AbsoluteArrowPosition =
         if (screenHeight / 2 > verticalCenter) {
             AbsoluteArrowPosition.UP
         } else {
@@ -60,9 +71,7 @@ internal object TooltipFieldUtil {
         }
     }
 
-    fun calculateArrowMargin(horizontalCenter: Float, density: Float): Int {
-        val arrowHalfWidth = (15 * density)
-
-        return (horizontalCenter - arrowHalfWidth).toInt()
+    fun calculateStartMarginForArrow(arrowMargin: Int, resource: Drawable): Int {
+        return arrowMargin - (resource.intrinsicWidth) / 2
     }
 }
