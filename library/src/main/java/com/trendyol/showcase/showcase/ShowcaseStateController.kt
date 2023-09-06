@@ -39,7 +39,7 @@ class ShowcaseStateController(context: Context) : Application.ActivityLifecycleC
     }
 
     private fun finishShowcase(): Unit? {
-        return this.activity?.finishShowcase(ActionType.EXIT, -1)
+        return this.activity?.finishShowcase(ActionType.LIFECYCLE_REACHED_STOP, -1)
     }
     //endregion
 
