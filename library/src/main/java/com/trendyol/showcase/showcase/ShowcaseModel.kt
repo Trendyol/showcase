@@ -17,7 +17,7 @@ data class ShowcaseModel(
     val highlightedViewsRectFList: List<RectF>,
     val radius: Float,
     val titleText: String,
-    val descriptionText: String,
+    val descriptionText: CharSequence,
     @ColorInt val titleTextColor: Int,
     @ColorInt val descriptionTextColor: Int,
     @ColorInt val popupBackgroundColor: Int,

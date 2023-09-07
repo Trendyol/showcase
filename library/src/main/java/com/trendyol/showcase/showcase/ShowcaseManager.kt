@@ -115,7 +115,7 @@ class ShowcaseManager private constructor(
 
         private var focusViews: Array<out View>? = null
         private var titleText: String = Constants.DEFAULT_TEXT
-        private var descriptionText: String = Constants.DEFAULT_TEXT
+        private var descriptionText: CharSequence = Constants.DEFAULT_TEXT
         private var isShowcaseViewVisibleIndefinitely: Boolean = Constants.DEFAULT_SHOW_FOREVER
         private var showDuration: Long = Constants.DEFAULT_SHOW_DURATION
         @ColorInt
@@ -209,7 +209,7 @@ class ShowcaseManager private constructor(
         fun titleTextStyle(@IntRange(from = Typeface.NORMAL.toLong(), to = Typeface.BOLD_ITALIC.toLong()) textStyle: Int) =
             apply { titleTextStyle = textStyle }
 
-        fun descriptionText(description: String) = apply { descriptionText = description }
+        fun descriptionText(description: CharSequence) = apply { descriptionText = description }
 
         fun descriptionTextColor(@ColorInt color: Int) = apply { descriptionTextColor = color }
 

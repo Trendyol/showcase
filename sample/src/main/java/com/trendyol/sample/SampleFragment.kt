@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.text.color
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -129,12 +131,21 @@ class SampleFragment : Fragment() {
                 }
             }
 
+            val descriptionText = SpannableStringBuilder()
+                .color(ContextCompat.getColor(requireContext(), R.color.colorAccent)) {
+                    append("Center")
+                }
+                .append(" is ")
+                .color(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) {
+                    append("here.")
+                }
+
             buttonCenter.setOnClickListener {
                 val context = requireContext()
                 ShowcaseManager.Builder()
                     .focus(buttonCenter)
                     .titleText("Title For Center!")
-                    .descriptionText("Center is here.")
+                    .descriptionText(descriptionText)
                     .titleTextColor(ContextCompat.getColor(context, R.color.white))
                     .titleTextStyle(Typeface.BOLD)
                     .backgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryDark))
@@ -235,7 +246,8 @@ class SampleFragment : Fragment() {
     private fun buildSlidableContentList(): List<SlidableContent> {
         val context = requireContext()
         val baseSlidableContent = slidableContent {
-            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Aspect_ratio_16_9_example.jpg"
+            imageUrl =
+                "https://upload.wikimedia.org/wikipedia/commons/7/7c/Aspect_ratio_16_9_example.jpg"
             titleTextColor = ContextCompat.getColor(context, R.color.black)
             titleTextSize = 16f
             titleTextFontFamily = "sans-serif"
@@ -283,7 +295,8 @@ class SampleFragment : Fragment() {
             WindowCompat.setDecorFitsSystemWindows(window, true)
             val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
             if (isStatusBarVisible) {
-                windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+                windowInsetsController.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
                 windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
             } else {
                 windowInsetsController.systemBarsBehavior =
