@@ -79,7 +79,7 @@ class TooltipView @JvmOverloads constructor(
                 val drawable: Drawable = requireNotNull(
                     ContextCompat.getDrawable(
                         context,
-                        tooltipViewState.getTopArrowResource()
+                        tooltipViewState.getArrowResource()
                     )
                 )
                 val imageStartMargin = calculateStartMarginForArrow(
@@ -108,9 +108,10 @@ class TooltipView @JvmOverloads constructor(
                 val drawable: Drawable = requireNotNull(
                     ContextCompat.getDrawable(
                         context,
-                        tooltipViewState.getBottomArrowResource()
+                        tooltipViewState.getArrowResource()
                     )
                 )
+                rotation = 180F
                 val imageStartMargin = calculateStartMarginForArrow(
                     tooltipViewState.arrowMargin,
                     drawable
