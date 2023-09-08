@@ -125,7 +125,7 @@ class TooltipViewStateTest {
 
         //then
         val expectedResult = R.drawable.ic_showcase_arrow_up
-        val actualResult = tooltipViewState.getTopArrowResource()
+        val actualResult = tooltipViewState.getArrowResource()
 
         actualResult `should be` expectedResult
     }
@@ -137,7 +137,7 @@ class TooltipViewStateTest {
         val tooltipViewState = TooltipViewStateFactory.provideTooltipViewState(arrowResource = givenArrowResource)
 
         //then
-        val actualResult = tooltipViewState.getTopArrowResource()
+        val actualResult = tooltipViewState.getArrowResource()
 
         actualResult `should be` givenArrowResource
     }
@@ -164,30 +164,6 @@ class TooltipViewStateTest {
         val actualResult = tooltipViewState.getTopArrowVisibility()
 
         actualResult `should be` expectedResult
-    }
-
-    @Test
-    fun `when arrowResource is DEFAULT_ARROW_RESOURCE then getBottomArrowResource() returns ic_arrow_down`() {
-        //when
-        val tooltipViewState = TooltipViewStateFactory.provideTooltipViewState(arrowResource = DEFAULT_ARROW_RESOURCE)
-
-        //then
-        val expectedResult = R.drawable.ic_showcase_arrow_down
-        val actualResult = tooltipViewState.getBottomArrowResource()
-
-        actualResult `should be` expectedResult
-    }
-
-    @Test
-    fun `when arrowResource is not DEFAULT_ARROW_RESOURCE then getBottomArrowResource() returns arrowResource`() {
-        //when
-        val givenArrowResource = android.R.drawable.arrow_down_float
-        val tooltipViewState = TooltipViewStateFactory.provideTooltipViewState(arrowResource = givenArrowResource)
-
-        //then
-        val actualResult = tooltipViewState.getBottomArrowResource()
-
-        actualResult `should be` givenArrowResource
     }
 
     @Test
