@@ -50,13 +50,10 @@ internal data class TooltipViewState(
 
     fun getArrowPercentage() = showcaseModel.arrowPercentage
 
-    fun getTopArrowResource() =
+    fun getArrowResource() =
         if (showcaseModel.arrowResource == Constants.DEFAULT_ARROW_RESOURCE) R.drawable.ic_showcase_arrow_up else showcaseModel.arrowResource
 
     fun getTopArrowVisibility() = if (arrowPosition == AbsoluteArrowPosition.UP) View.VISIBLE else View.GONE
-
-    fun getBottomArrowResource() =
-        if (showcaseModel.arrowResource == Constants.DEFAULT_ARROW_RESOURCE) R.drawable.ic_showcase_arrow_down else showcaseModel.arrowResource
 
     fun getBottomArrowVisibility() = if (arrowPosition == AbsoluteArrowPosition.DOWN) View.VISIBLE else View.GONE
 
