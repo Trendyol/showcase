@@ -23,6 +23,7 @@ object Constants {
     const val DEFAULT_TEXT = ""
     const val DEFAULT_SHOW_DURATION = 2000L
     const val DEFAULT_SHOW_FOREVER = true
+    const val DEFAULT_ARROW_VISIBILITY = true
     const val DEFAULT_ARROW_RESOURCE = -1
     val DEFAULT_ARROW_POSITION = ArrowPosition.AUTO
     val DEFAULT_HIGHLIGHT_TYPE = HighlightType.RECTANGLE
