@@ -191,6 +191,34 @@ class TooltipViewStateTest {
     }
 
     @Test
+    fun `Given isArrowVisible false, When getTopArrowVisibility called, Then it should return GONE`() {
+        // Given
+        val isArrowVisible = false
+        val expectedResult = View.GONE
+        val tooltipViewState = TooltipViewStateFactory.provideTooltipViewState(isArrowVisible = isArrowVisible)
+
+        // When
+        val actualResult = tooltipViewState.getTopArrowVisibility()
+
+        // Then
+        actualResult `should be` expectedResult
+    }
+
+    @Test
+    fun `Given isArrowVisible false, When getBottomArrowVisibility called, Then it should return GONE`() {
+        // Given
+        val isArrowVisible = false
+        val expectedResult = View.GONE
+        val tooltipViewState = TooltipViewStateFactory.provideTooltipViewState(isArrowVisible = isArrowVisible)
+
+        // When
+        val actualResult = tooltipViewState.getBottomArrowVisibility()
+
+        // Then
+        actualResult `should be` expectedResult
+    }
+
+    @Test
     fun `when showCloseButton is true then getCloseButtonVisibility() returns VISIBLE`() {
         //when
         val tooltipViewState = TooltipViewStateFactory.provideTooltipViewState(showCloseButton = true)

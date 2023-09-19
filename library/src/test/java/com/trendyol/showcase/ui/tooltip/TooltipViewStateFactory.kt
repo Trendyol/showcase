@@ -27,7 +27,8 @@ internal object TooltipViewStateFactory {
         imageUrl: String = "",
         customContent: Int? = null,
         isStatusBarVisible: Boolean = false,
-        arrowMargin: Int = 0
+        arrowMargin: Int = 0,
+        isArrowVisible: Boolean = true
     ): TooltipViewState {
         val showcaseModel = ShowcaseModel(
             rectF = RectF(),
@@ -67,7 +68,8 @@ internal object TooltipViewStateFactory {
             descriptionTextStyle = Typeface.NORMAL,
             titleTextFontFamily = "sans-serif",
             showDuration = 2000L,
-            isShowcaseViewVisibleIndefinitely = true
+            isShowcaseViewVisibleIndefinitely = true,
+            isArrowVisible = isArrowVisible
         )
         return provideTooltipViewState(showcaseModel, absoluteArrowPosition, arrowMargin)
     }
