@@ -53,9 +53,29 @@ internal data class TooltipViewState(
     fun getArrowResource() =
         if (showcaseModel.arrowResource == Constants.DEFAULT_ARROW_RESOURCE) R.drawable.ic_showcase_arrow_up else showcaseModel.arrowResource
 
-    fun getTopArrowVisibility() = if (arrowPosition == AbsoluteArrowPosition.UP) View.VISIBLE else View.GONE
+    fun getTopArrowVisibility(): Int {
+        if (showcaseModel.isArrowVisible.not()) {
+            return  View.GONE
+        }
 
-    fun getBottomArrowVisibility() = if (arrowPosition == AbsoluteArrowPosition.DOWN) View.VISIBLE else View.GONE
+        return if (arrowPosition == AbsoluteArrowPosition.UP) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    fun getBottomArrowVisibility(): Int {
+        if (showcaseModel.isArrowVisible.not()) {
+            return View.GONE
+        }
+
+        return if (arrowPosition == AbsoluteArrowPosition.DOWN) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
 
     fun getCloseButtonColor() = showcaseModel.closeButtonColor
 

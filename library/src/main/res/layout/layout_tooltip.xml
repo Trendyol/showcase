@@ -132,5 +132,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutContents"
-        tools:srcCompat="@drawable/ic_showcase_arrow_down" />
+        tools:srcCompat="@drawable/ic_showcase_arrow_up"
+        tools:visibility="visible" />
 </merge>

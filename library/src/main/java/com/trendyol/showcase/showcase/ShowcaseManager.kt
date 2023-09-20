@@ -117,6 +117,7 @@ class ShowcaseManager private constructor(
         private var titleText: String = Constants.DEFAULT_TEXT
         private var descriptionText: CharSequence = Constants.DEFAULT_TEXT
         private var isShowcaseViewVisibleIndefinitely: Boolean = Constants.DEFAULT_SHOW_FOREVER
+        private var isArrowVisible: Boolean = Constants.DEFAULT_ARROW_VISIBILITY
         private var showDuration: Long = Constants.DEFAULT_SHOW_DURATION
         @ColorInt
         private var titleTextColor: Int = Constants.DEFAULT_TEXT_COLOR
@@ -191,6 +192,13 @@ class ShowcaseManager private constructor(
          */
         fun showcaseViewVisibleIndefinitely(isVisibleIndefinitely: Boolean) =
             apply { isShowcaseViewVisibleIndefinitely = isVisibleIndefinitely }
+
+        /**
+         * Controls whether arrow icon should be shown or not. By default it is true.
+         *
+         * @param isVisible assigns boolean value to isArrowVisible.
+         */
+        fun setArrowVisibility(isVisible: Boolean) = apply { isArrowVisible = isVisible }
 
         /**
          * Assign duration value to showDuration. By default it is 2000L.
@@ -382,7 +390,8 @@ class ShowcaseManager private constructor(
                 radiusBottomStart = radiusBottomStart,
                 isToolTipVisible = isToolTipVisible,
                 showDuration = showDuration,
-                isShowcaseViewVisibleIndefinitely = isShowcaseViewVisibleIndefinitely
+                isShowcaseViewVisibleIndefinitely = isShowcaseViewVisibleIndefinitely,
+                isArrowVisible = isArrowVisible,
             )
 
             return ShowcaseManager(showcaseModel = showcaseModel, resId = resId)

@@ -51,6 +51,7 @@ data class ShowcaseModel(
     val isToolTipVisible: Boolean,
     val showDuration: Long,
     val isShowcaseViewVisibleIndefinitely: Boolean,
+    val isArrowVisible: Boolean,
 ) : Parcelable {
 
     fun horizontalCenter() = rectF.left + ((rectF.right - rectF.left) / 2)
