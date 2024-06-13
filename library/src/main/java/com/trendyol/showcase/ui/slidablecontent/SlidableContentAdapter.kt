@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.trendyol.showcase.databinding.ItemSlidableContentBinding
 import com.trendyol.showcase.ui.loadImage
 import com.trendyol.showcase.ui.setTextSizeInSp
+import com.trendyol.showcase.util.getHeightInPixels
 
 internal class SlidableContentAdapter(private val slidableContentList: List<SlidableContent>) :
     RecyclerView.Adapter<SlidableContentAdapter.ViewPagerViewHolder>() {
@@ -57,9 +58,14 @@ internal class SlidableContentAdapter(private val slidableContentList: List<Slid
                     isVisible = viewState.isDescriptionVisible()
                     setTextSizeInSp(viewState.slidableContent.descriptionTextSize)
                 }
-
+                imageView.layoutParams.height =
+                    binding.root.context.resources.getHeightInPixels() / SLIDABLE_IMAGE_HEIGHT_RATIO
                 imageView.loadImage(viewState.slidableContent.imageUrl)
             }
         }
+    }
+
+    companion object {
+        private const val SLIDABLE_IMAGE_HEIGHT_RATIO = 5
     }
 }
