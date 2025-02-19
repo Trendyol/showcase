@@ -18,6 +18,8 @@ import com.trendyol.showcase.util.OnTouchClickListener
 import com.trendyol.showcase.util.TooltipFieldUtil
 import com.trendyol.showcase.util.getDensity
 import com.trendyol.showcase.util.getHeightInPixels
+import com.trendyol.showcase.util.isRTL
+import com.trendyol.showcase.util.screenWidth
 import com.trendyol.showcase.util.shape.CircleShape
 import com.trendyol.showcase.util.shape.RectangleShape
 import com.trendyol.showcase.util.statusBarHeight
@@ -88,7 +90,11 @@ class ShowcaseView @JvmOverloads constructor(
 
         listenClickEvents()
         val arrowPosition = TooltipFieldUtil.decideArrowPosition(showcaseModel, resources.getHeightInPixels())
-        val arrowStartMargin = showcaseModel.horizontalCenter().toInt()
+        val arrowStartMargin = if (context.isRTL()) {
+            context.screenWidth() - showcaseModel.horizontalCenter().toInt()
+        } else {
+            showcaseModel.horizontalCenter().toInt()
+        }
         val marginFromBottom = getMarginFromBottom(showcaseModel, arrowPosition)
         val showcaseViewState = ShowcaseViewState(margin = marginFromBottom)
         val tooltipViewState = TooltipViewState(
