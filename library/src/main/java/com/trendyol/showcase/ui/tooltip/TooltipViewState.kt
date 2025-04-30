@@ -1,6 +1,9 @@
 package com.trendyol.showcase.ui.tooltip
 
+import android.content.Context
+import android.graphics.Typeface
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import com.trendyol.showcase.R
 import com.trendyol.showcase.showcase.ShowcaseModel
 import com.trendyol.showcase.util.Constants
@@ -88,4 +91,20 @@ internal data class TooltipViewState(
     fun isSlidableContentVisible() = showcaseModel.slidableContentList.isNullOrEmpty().not()
 
     fun isToolTipVisible() = showcaseModel.isToolTipVisible
+
+    fun getTitleTypeface(context: Context): Typeface? {
+        return showcaseModel.titleTextFontFamilyResId?.let { resId ->
+            ResourcesCompat.getFont(context, resId)
+        } ?: showcaseModel.titleTextFontFamily?.let { fontFamily ->
+            Typeface.create(fontFamily, showcaseModel.titleTextStyle)
+        }
+    }
+
+    fun getDescriptionTypeface(context: Context): Typeface? {
+        return showcaseModel.descriptionTextFontFamilyResId?.let { resId ->
+            ResourcesCompat.getFont(context, resId)
+        } ?: showcaseModel.descriptionTextFontFamily?.let { fontFamily ->
+            Typeface.create(fontFamily, showcaseModel.descriptionTextStyle)
+        }
+    }
 }

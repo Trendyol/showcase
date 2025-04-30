@@ -4,6 +4,7 @@ import android.graphics.RectF
 import android.os.Parcelable
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.FontRes
 import androidx.annotation.LayoutRes
 import com.trendyol.showcase.ui.slidablecontent.SlidableContent
 import com.trendyol.showcase.ui.showcase.HighlightType
@@ -31,9 +32,11 @@ data class ShowcaseModel(
     val windowBackgroundAlpha: Int,
     val titleTextSize: Float,
     val titleTextFontFamily: String,
+    @FontRes val titleTextFontFamilyResId: Int?,
     val titleTextStyle: Int,
     val descriptionTextSize: Float,
     val descriptionTextFontFamily: String,
+    @FontRes val descriptionTextFontFamilyResId: Int?,
     val descriptionTextStyle: Int,
     val highlightPadding: Float,
     val cancellableFromOutsideTouch: Boolean,

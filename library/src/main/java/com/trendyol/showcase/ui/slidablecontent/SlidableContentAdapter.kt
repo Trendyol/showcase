@@ -1,6 +1,5 @@
 package com.trendyol.showcase.ui.slidablecontent
 
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -37,10 +36,7 @@ internal class SlidableContentAdapter(private val slidableContentList: List<Slid
                 val viewState = SlidableContentViewState(item)
 
                 with(textViewTitle) {
-                    typeface = Typeface.create(
-                        viewState.slidableContent.titleTextFontFamily,
-                        viewState.slidableContent.titleTextStyle,
-                    )
+                    typeface = viewState.getTitleTypeface(context)
                     text = viewState.slidableContent.title
                     textAlignment = viewState.getTextPosition()
                     setTextColor(viewState.slidableContent.titleTextColor)
@@ -48,10 +44,7 @@ internal class SlidableContentAdapter(private val slidableContentList: List<Slid
                     setTextSizeInSp(viewState.slidableContent.titleTextSize)
                 }
                 with(textViewDescription) {
-                    typeface = Typeface.create(
-                        viewState.slidableContent.descriptionTextFontFamily,
-                        viewState.slidableContent.descriptionTextStyle,
-                    )
+                    typeface = viewState.getDescriptionTypeface(context)
                     text = viewState.slidableContent.description
                     textAlignment = viewState.getTextPosition()
                     setTextColor(viewState.slidableContent.descriptionTextColor)

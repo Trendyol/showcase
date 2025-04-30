@@ -1,7 +1,6 @@
 package com.trendyol.showcase.ui.tooltip
 
 import android.content.Context
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -48,10 +47,7 @@ class TooltipView @JvmOverloads constructor(
     internal fun bind(tooltipViewState: TooltipViewState) {
         with(binding) {
             with(textViewTooltipTitle) {
-                typeface = Typeface.create(
-                    tooltipViewState.getTitleTextFontFamily(),
-                    tooltipViewState.getTitleTextStyle()
-                )
+                typeface = tooltipViewState.getTitleTypeface(context)
                 text = tooltipViewState.getTitle()
                 textAlignment = tooltipViewState.getTextPosition()
                 setTextColor(tooltipViewState.getTitleTextColor())
@@ -59,10 +55,7 @@ class TooltipView @JvmOverloads constructor(
                 setTextSizeInSp(tooltipViewState.getTitleTextSize())
             }
             with(textViewTooltipDescription) {
-                typeface = Typeface.create(
-                    tooltipViewState.getDescriptionTextFontFamily(),
-                    tooltipViewState.getDescriptionTextStyle()
-                )
+                typeface = tooltipViewState.getDescriptionTypeface(context)
                 text = tooltipViewState.getDescription()
                 textAlignment = tooltipViewState.getTextPosition()
                 setTextColor(tooltipViewState.getDescriptionTextColor())
