@@ -62,11 +62,13 @@ internal object TooltipViewStateFactory {
             radiusBottomStart = 0F,
             radiusTopEnd = 0F,
             descriptionTextFontFamily = "sans-serif",
+            descriptionTextFontFamilyResId = null,
             isToolTipVisible = true,
             slidableContentList = listOf(),
             titleTextStyle = Typeface.BOLD,
             descriptionTextStyle = Typeface.NORMAL,
             titleTextFontFamily = "sans-serif",
+            titleTextFontFamilyResId = null,
             showDuration = 2000L,
             isShowcaseViewVisibleIndefinitely = true,
             isArrowVisible = isArrowVisible

@@ -102,9 +102,13 @@ class ShowcaseManager private constructor(
                 showcaseModel.isShowcaseViewClickable
             ),
             titleTextFontFamily = typedArray.getString(R.styleable.Showcase_Theme_titleTextFontFamily) ?: showcaseModel.titleTextFontFamily,
+            titleTextFontFamilyResId = typedArray.getResourceId(R.styleable.Showcase_Theme_titleTextFontFamilyResId, 0)
+                .takeIf { it != 0 } ?: showcaseModel.titleTextFontFamilyResId,
             titleTextStyle = typedArray.getInteger(R.styleable.Showcase_Theme_titleStyle, showcaseModel.titleTextStyle),
             descriptionTextFontFamily = typedArray.getString(R.styleable.Showcase_Theme_descriptionTextFontFamily)
                 ?: showcaseModel.descriptionTextFontFamily,
+            descriptionTextFontFamilyResId = typedArray.getResourceId(R.styleable.Showcase_Theme_descriptionTextFontFamilyResId, 0)
+                .takeIf { it != 0 } ?: showcaseModel.descriptionTextFontFamilyResId,
             descriptionTextStyle = typedArray.getInteger(R.styleable.Showcase_Theme_descriptionTextStyle, showcaseModel.descriptionTextStyle)
         ).also {
             typedArray.recycle()
@@ -143,9 +147,11 @@ class ShowcaseManager private constructor(
         private var windowBackgroundAlpha: Int = Constants.DEFAULT_BACKGROUND_ALPHA
         private var titleTextSize: Float = Constants.DEFAULT_TITLE_TEXT_SIZE
         private var titleTextFontFamily: String = Constants.DEFAULT_TITLE_TEXT_FONT_FAMILY
+        private var titleTextFontFamilyResId: Int? = null
         private var titleTextStyle: Int = Constants.DEFAULT_TITLE_TEXT_STYLE
         private var descriptionTextSize: Float = Constants.DEFAULT_DESCRIPTION_TEXT_SIZE
         private var descriptionTextFontFamily: String = Constants.DEFAULT_DESCRIPTION_TEXT_FONT_FAMILY
+        private var descriptionTextFontFamilyResId: Int? = null
         private var descriptionTextStyle: Int = Constants.DEFAULT_DESCRIPTION_TEXT_STYLE
         private var highlightPadding: Float = Constants.DEFAULT_HIGHLIGHT_PADDING_EXTRA
 
@@ -184,6 +190,13 @@ class ShowcaseManager private constructor(
          * @param fontFamily assigns fontFamily to titleText
          */
         fun titleTextFontFamily(fontFamily: String) = apply { titleTextFontFamily = fontFamily }
+
+        /**
+         * Sets the title font family using a font resource ID
+         *
+         * @param resId font resId
+         */
+        fun titleTextFontFamilyResId(@FontRes resId: Int) = apply { titleTextFontFamilyResId = resId }
 
         /**
          * Controls whether showcase should be shown indefinitely or not. By default it is true.
@@ -228,6 +241,15 @@ class ShowcaseManager private constructor(
          */
         fun descriptionTextFontFamily(fontFamily: String) =
             apply { descriptionTextFontFamily = fontFamily }
+
+        /**
+         * Sets the description font family using a font resource ID
+         *
+         * @param resId font resId
+         */
+        fun descriptionTextFontFamilyResId(@FontRes resId: Int) = apply { 
+            descriptionTextFontFamilyResId = resId
+        }
 
         /**
          * Assign textStyle to descriptionText
@@ -371,9 +393,11 @@ class ShowcaseManager private constructor(
                 windowBackgroundAlpha = windowBackgroundAlpha,
                 titleTextSize = titleTextSize,
                 titleTextFontFamily = titleTextFontFamily,
+                titleTextFontFamilyResId = titleTextFontFamilyResId,
                 titleTextStyle = titleTextStyle,
                 descriptionTextSize = descriptionTextSize,
                 descriptionTextFontFamily = descriptionTextFontFamily,
+                descriptionTextFontFamilyResId = descriptionTextFontFamilyResId,
                 descriptionTextStyle = descriptionTextStyle,
                 highlightPadding = highlightPadding,
                 cancellableFromOutsideTouch = cancellableFromOutsideTouch,
