@@ -95,16 +95,12 @@ internal data class TooltipViewState(
     fun getTitleTypeface(context: Context): Typeface? {
         return showcaseModel.titleTextFontFamilyResId?.let { resId ->
             ResourcesCompat.getFont(context, resId)
-        } ?: showcaseModel.titleTextFontFamily?.let { fontFamily ->
-            Typeface.create(fontFamily, showcaseModel.titleTextStyle)
-        }
+        } ?: Typeface.create(showcaseModel.titleTextFontFamily, showcaseModel.titleTextStyle)
     }
 
     fun getDescriptionTypeface(context: Context): Typeface? {
         return showcaseModel.descriptionTextFontFamilyResId?.let { resId ->
             ResourcesCompat.getFont(context, resId)
-        } ?: showcaseModel.descriptionTextFontFamily?.let { fontFamily ->
-            Typeface.create(fontFamily, showcaseModel.descriptionTextStyle)
-        }
+        } ?: Typeface.create(showcaseModel.descriptionTextFontFamily, showcaseModel.descriptionTextStyle)
     }
 }
