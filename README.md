@@ -6,7 +6,8 @@
 
 With **Showcase**, you can easily show tooltips. **Showcase** will highlight the view and show tooltip on it. You can
 customize title and description text fields, backgrounds and arrow positions. You can also find out how the user closed
-the showcase and in multi focus situations you can find out which view was clicked.
+the showcase and in multi focus situations you can find out which view was clicked. The library supports both system fonts
+and custom fonts for tooltip text, allowing you to maintain brand consistency across your app.
 
 ## Installation
 
@@ -40,7 +41,8 @@ val showcaseManager = ShowcaseManager.Builder()
     .titleText("Title about myView")  
     .titleTextSize(22F) 
     .titleTextColor(ContextCompat.getColor(this, R.color.blue)) 
-    .titleTextFontFamily("sans-serif-medium")  
+    .titleTextFontFamily("sans-serif-medium")  // Using system font
+    .titleTextFontFamilyResId(R.font.custom_font)  // Using custom font
     .titleTextStyle(Typeface.BOLD)  
     .descriptionText("Little bit info for my lovely myView")   
     .windowBackgroundAlpha(127)  
@@ -77,8 +79,10 @@ showcaseManager.show(context) // or showcaseManager.show(context, REQUEST_CODE_S
 | `builder.descriptionTextColor(Int)`                     | descriptionText's color                                                         | yes      | Color.BLACK                 | yes      |
 | `builder.titleTextSize(Int)`                            | titleText's text size in SP                                                     | yes      | 18 SP                       | no       |
 | `builder.descriptionTextSize(Int)`                      | descriptionText's text size in SP                                               | yes      | 14 SP                       | no       |
-| `builder.titleTextFontFamily(String)`                   | titleText's fontFamily                                                          | yes      | sans-serif                  | yes      |
-| `builder.descriptionTextFontFamily(String)`             | descriptionText's fontFamily                                                    | yes      | sans-serif                  | yes      |
+| `builder.titleTextFontFamily(String)`                   | titleText's fontFamily (system fonts)                                           | yes      | sans-serif                  | yes      |
+| `builder.titleTextFontFamilyResId(Int)`                 | titleText's custom font resource ID                                             | yes      | null                        | yes      |
+| `builder.descriptionTextFontFamily(String)`             | descriptionText's fontFamily (system fonts)                                     | yes      | sans-serif                  | yes      |
+| `builder.descriptionTextFontFamilyResId(Int)`           | descriptionText's custom font resource ID                                       | yes      | null                        | yes      |
 | `builder.titleTextStyle(Int)`                           | titleText's textStyle                                                           | yes      | Typeface.NORMAL             | yes      |
 | `builder.descriptionTextStyle(Int)`                     | descriptionText's textStyle                                                     | yes      | Typeface.NORMAL             | yes      |
 | `builder.backgroundColor(Int)`                          | background color of tooltip                                                     | yes      | Color.WHITE                 | yes      |
