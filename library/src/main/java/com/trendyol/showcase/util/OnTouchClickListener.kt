@@ -14,6 +14,7 @@ class OnTouchClickListener(private val minMove: Int = 10) : View.OnTouchListener
     private var startY: Float = 0f
 
     var clickListener: ((v: View, x: Float, y: Float) -> Unit)? = null
+    var scrollListener: ((v: View, startX: Float, startY: Float, endX: Float, endY: Float) -> Unit)? = null
 
     private fun isAClick(startX: Float, endX: Float, startY: Float, endY: Float): Boolean {
         val differenceX = abs(startX - endX)
@@ -33,8 +34,10 @@ class OnTouchClickListener(private val minMove: Int = 10) : View.OnTouchListener
                 val endY = event.y
                 if (isAClick(startX, endX, startY, endY)) {
                     clickListener?.invoke(v, event.x, event.y)
-                    return true
+                } else {
+                    scrollListener?.invoke(v, startX, startY, endX, endY)
                 }
+                return true
             }
         }
         return false
