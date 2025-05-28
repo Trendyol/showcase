@@ -159,6 +159,7 @@ class ShowcaseManager private constructor(
         private var resId: Int? = null
         private var cancellableFromOutsideTouch: Boolean =
             Constants.DEFAULT_CANCELLABLE_FROM_OUTSIDE_TOUCH
+        private var cancellableFromScroll: Boolean = Constants.DEFAULT_CANCELLABLE_FROM_SCROLL
         private var isShowcaseViewClickable: Boolean = Constants.DEFAULT_SHOWCASE_VIEW_CLICKABLE
         private var isDebugMode: Boolean = false
         private var textPosition: TextPosition = Constants.DEFAULT_TEXT_POSITION
@@ -307,6 +308,8 @@ class ShowcaseManager private constructor(
 
         fun cancellableFromOutsideTouch(cancellable: Boolean) = apply { cancellableFromOutsideTouch = cancellable }
 
+        fun cancellableFromScroll(cancellable: Boolean) = apply { cancellableFromScroll = cancellable }
+
         /**
          * Makes the showcase view clickable or not.
          *
@@ -401,6 +404,7 @@ class ShowcaseManager private constructor(
                 descriptionTextStyle = descriptionTextStyle,
                 highlightPadding = highlightPadding,
                 cancellableFromOutsideTouch = cancellableFromOutsideTouch,
+                cancellableFromScroll = cancellableFromScroll,
                 isShowcaseViewClickable = isShowcaseViewClickable,
                 isDebugMode = isDebugMode,
                 textPosition = textPosition,

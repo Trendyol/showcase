@@ -40,6 +40,7 @@ data class ShowcaseModel(
     val descriptionTextStyle: Int,
     val highlightPadding: Float,
     val cancellableFromOutsideTouch: Boolean,
+    val cancellableFromScroll: Boolean,
     val isShowcaseViewClickable: Boolean,
     val isDebugMode: Boolean,
     val textPosition: TextPosition,

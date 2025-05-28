@@ -142,6 +142,11 @@ class ShowcaseView @JvmOverloads constructor(
                     sendActionType(ActionType.EXIT)
                 }
             }
+            scrollListener = { view, startX, startY, endX, endY ->
+                if (showcaseModel?.cancellableFromScroll == true) {
+                    sendActionType(ActionType.EXIT)
+                }
+            }
         }.also {
             setOnTouchListener(it)
         }

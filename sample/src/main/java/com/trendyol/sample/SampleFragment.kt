@@ -112,6 +112,7 @@ class SampleFragment : Fragment() {
                     )
                     .showCloseButton(true)
                     .cancellableFromOutsideTouch(true)
+                    .cancellableFromScroll(true)
                     .arrowPosition(ArrowPosition.AUTO)
                     .highlightType(HighlightType.RECTANGLE)
                     .textPosition(TextPosition.START)
@@ -187,6 +188,7 @@ class SampleFragment : Fragment() {
                         bottomStartRadius = 16f
                     )
                     .cancellableFromOutsideTouch(true)
+                    .cancellableFromScroll(true)
                     .toolTipVisible(false)
                     .statusBarVisible(isStatusBarVisible)
                     .build()
