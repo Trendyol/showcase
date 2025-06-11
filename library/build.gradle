@@ -10,11 +10,11 @@ ext {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 35
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 33
+        targetSdkVersion 35
 
         vectorDrawables.useSupportLibrary = true
     }
