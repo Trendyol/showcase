@@ -2,9 +2,12 @@ package com.trendyol.showcase.ui.showcase
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.trendyol.showcase.databinding.LayoutShowcaseBinding
@@ -15,14 +18,15 @@ import com.trendyol.showcase.ui.tooltip.AbsoluteArrowPosition
 import com.trendyol.showcase.ui.tooltip.TooltipViewState
 import com.trendyol.showcase.util.ActionType
 import com.trendyol.showcase.util.OnTouchClickListener
+import com.trendyol.showcase.util.ShowcaseViewRegistry
 import com.trendyol.showcase.util.TooltipFieldUtil
-import com.trendyol.showcase.util.getDensity
 import com.trendyol.showcase.util.getHeightInPixels
 import com.trendyol.showcase.util.isRTL
 import com.trendyol.showcase.util.screenWidth
 import com.trendyol.showcase.util.shape.CircleShape
 import com.trendyol.showcase.util.shape.RectangleShape
 import com.trendyol.showcase.util.statusBarHeight
+import com.trendyol.showcase.util.toRectF
 
 class ShowcaseView @JvmOverloads constructor(
     context: Context,
@@ -32,6 +36,8 @@ class ShowcaseView @JvmOverloads constructor(
     private val binding = LayoutShowcaseBinding.inflate(LayoutInflater.from(context), this, true)
     private var showcaseModel: ShowcaseModel? = null
     private var clickListener: ((ActionType, Int) -> (Unit))? = null
+    private var focusedView: View? = null
+    private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     override fun dispatchDraw(canvas: Canvas) {
         val showcaseModel = this.showcaseModel ?: return super.dispatchDraw(canvas)
@@ -48,6 +54,7 @@ class ShowcaseView @JvmOverloads constructor(
                         radius = model.radius + model.highlightPadding
                     )
                 }
+
                 HighlightType.RECTANGLE -> {
                     RectangleShape(
                         statusBarDiff = statusBarHeight(model.isStatusBarVisible),
@@ -75,6 +82,11 @@ class ShowcaseView @JvmOverloads constructor(
         super.onAttachedToWindow()
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        removeFocusedViewObserver()
+    }
+
     fun setShowcaseModel(model: ShowcaseModel?) {
         showcaseModel = model
         bind()
@@ -85,11 +97,47 @@ class ShowcaseView @JvmOverloads constructor(
         binding.tooltipView.setClickListener(listener)
     }
 
+    fun setFocusedViewId(viewId: Int) {
+        // Get the focused view from the global reference
+        focusedView = ShowcaseViewRegistry.getFocusedView(viewId)
+        observeFocusedView()
+    }
+
+    private fun observeFocusedView() {
+        focusedView?.let { view ->
+            globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+                updateTooltipPosition(view)
+            }
+            view.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+        }
+    }
+
+    private fun updateTooltipPosition(targetView: View) {
+        val rect = Rect()
+        targetView.getGlobalVisibleRect(rect)
+        showcaseModel?.let { model ->
+            val newRectF = rect.toRectF()
+            val newRadius = TooltipFieldUtil.calculateRadius(rect)
+            model.updatePosition(newRectF, newRadius)
+            bind()
+        }
+    }
+
+    private fun removeFocusedViewObserver() {
+        focusedView?.let { view ->
+            globalLayoutListener?.let {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(it)
+            }
+        }
+        globalLayoutListener = null
+    }
+
     private fun bind() {
         val showcaseModel = this.showcaseModel ?: return
 
         listenClickEvents()
-        val arrowPosition = TooltipFieldUtil.decideArrowPosition(showcaseModel, resources.getHeightInPixels())
+        val arrowPosition =
+            TooltipFieldUtil.decideArrowPosition(showcaseModel, resources.getHeightInPixels())
         val arrowStartMargin = if (context.isRTL()) {
             context.screenWidth() - showcaseModel.horizontalCenter().toInt()
         } else {
@@ -111,7 +159,10 @@ class ShowcaseView @JvmOverloads constructor(
         }
     }
 
-    private fun getMarginFromBottom(showcaseModel: ShowcaseModel, arrowPosition: AbsoluteArrowPosition): Int {
+    private fun getMarginFromBottom(
+        showcaseModel: ShowcaseModel,
+        arrowPosition: AbsoluteArrowPosition
+    ): Int {
         return when (showcaseModel.highlightType) {
             HighlightType.CIRCLE -> TooltipFieldUtil.calculateMarginForCircle(
                 top = showcaseModel.topOfCircle(),
@@ -121,6 +172,7 @@ class ShowcaseView @JvmOverloads constructor(
                 isStatusBarVisible = showcaseModel.isStatusBarVisible,
                 screenHeight = resources.displayMetrics.heightPixels
             )
+
             HighlightType.RECTANGLE -> TooltipFieldUtil.calculateMarginForRectangle(
                 top = showcaseModel.rectF.top,
                 bottom = showcaseModel.rectF.bottom,
@@ -164,9 +216,12 @@ class ShowcaseView @JvmOverloads constructor(
                 HighlightType.CIRCLE -> {
                     newRectF.left = (it.horizontalCenter() - it.radius - it.highlightPadding)
                     newRectF.right = (it.horizontalCenter() + it.radius + it.highlightPadding)
-                    newRectF.top = (it.verticalCenter() - it.radius - it.highlightPadding + statusBarHeight())
-                    newRectF.bottom = (it.verticalCenter() + it.radius + it.highlightPadding - statusBarHeight())
+                    newRectF.top =
+                        (it.verticalCenter() - it.radius - it.highlightPadding + statusBarHeight())
+                    newRectF.bottom =
+                        (it.verticalCenter() + it.radius + it.highlightPadding - statusBarHeight())
                 }
+
                 HighlightType.RECTANGLE -> {
                     newRectF.left -= (it.highlightPadding / 2)
                     newRectF.right += (it.highlightPadding / 2)

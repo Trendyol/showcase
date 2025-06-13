@@ -14,9 +14,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ShowcaseModel(
-    val rectF: RectF,
-    val highlightedViewsRectFList: List<RectF>,
-    val radius: Float,
+    var rectF: RectF,
+    var highlightedViewsRectFList: List<RectF>,
+    var radius: Float,
     val titleText: String,
     val descriptionText: CharSequence,
     @ColorInt val titleTextColor: Int,
@@ -63,4 +63,10 @@ data class ShowcaseModel(
 
     fun bottomOfCircle() = verticalCenter() + radius
     fun topOfCircle() = verticalCenter() - radius
+    
+    fun updatePosition(newRectF: RectF, newRadius: Float) {
+        rectF = newRectF
+        radius = newRadius
+        highlightedViewsRectFList = listOf(newRectF)
+    }
 }

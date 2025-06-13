@@ -47,6 +47,7 @@ internal fun ImageView.layoutMarginStart(margin: Int, percentage: Int?) {
         } ?: run {
             this.marginStart = margin
         }
+        this@layoutMarginStart.layoutParams = this
     }
 }
 

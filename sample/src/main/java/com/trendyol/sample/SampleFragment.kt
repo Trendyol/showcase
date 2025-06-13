@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.color
@@ -242,6 +243,39 @@ class SampleFragment : Fragment() {
                     .build()
                     .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
             }
+
+            buttonMovingViewTest.setOnClickListener {
+                // Show showcase on the movable button
+                ShowcaseManager.Builder()
+                    .focus(buttonMovingViewTest)
+                    .titleText("Watch me follow!")
+                    .descriptionText("This tooltip will follow the button as it moves")
+                    .titleTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    .backgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                    .showCloseButton(true)
+                    .cancellableFromOutsideTouch(true)
+                    .arrowPosition(ArrowPosition.AUTO)
+                    .highlightType(HighlightType.RECTANGLE)
+                    .statusBarVisible(isStatusBarVisible)
+                    .build()
+                    .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
+
+                // Start moving the button after 2 seconds
+                view.postDelayed({
+                    moveButtonAround()
+                }, 1000)
+            }
+        }
+    }
+
+    private fun moveButtonAround() {
+        binding?.buttonMovingViewTest?.let { button ->
+            val params = button.layoutParams as ConstraintLayout.LayoutParams
+            params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            params.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            button.layoutParams = params
         }
     }
 

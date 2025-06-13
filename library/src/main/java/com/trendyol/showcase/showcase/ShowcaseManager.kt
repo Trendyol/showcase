@@ -18,12 +18,14 @@ import com.trendyol.showcase.ui.slidablecontent.SlidableContent
 import com.trendyol.showcase.ui.tooltip.ArrowPosition
 import com.trendyol.showcase.ui.tooltip.TextPosition
 import com.trendyol.showcase.util.Constants
+import com.trendyol.showcase.util.ShowcaseViewRegistry
 import com.trendyol.showcase.util.TooltipFieldUtil
 import com.trendyol.showcase.util.toRectF
 
 class ShowcaseManager private constructor(
     private val showcaseModel: ShowcaseModel,
-    @StyleRes val resId: Int?
+    @StyleRes val resId: Int?,
+    private val focusedView: View?
 ) {
 
     fun show(
@@ -45,6 +47,10 @@ class ShowcaseManager private constructor(
         val intent = Intent(activity, ShowcaseActivity::class.java)
         val model = if (resId != null) readFromStyle(activity, resId) else showcaseModel
         intent.putExtra(ShowcaseActivity.BUNDLE_KEY, model)
+        focusedView?.let { 
+            ShowcaseViewRegistry.registerView(it)
+            intent.putExtra(ShowcaseActivity.FOCUSED_VIEW_ID_KEY, it.id) 
+        }
 
         if (requestCode == null) {
             activity.startActivity(intent)
@@ -73,6 +79,10 @@ class ShowcaseManager private constructor(
             val intent = Intent(activity, ShowcaseActivity::class.java)
             val model = if (resId != null) readFromStyle(activity, resId) else showcaseModel
             intent.putExtra(ShowcaseActivity.BUNDLE_KEY, model)
+            focusedView?.let { 
+                ShowcaseViewRegistry.registerView(it)
+                intent.putExtra(ShowcaseActivity.FOCUSED_VIEW_ID_KEY, it.id) 
+            }
 
             if (requestCode == null) {
                 fragment.startActivity(intent)
@@ -363,6 +373,8 @@ class ShowcaseManager private constructor(
         fun setSlidableContentList(slidableContentList: List<SlidableContent>) =
             apply { this.slidableContentList = slidableContentList }
 
+        internal fun getFocusedView(): View? = focusViews?.firstOrNull()
+
         fun build(): ShowcaseManager {
             if (focusViews.isNullOrEmpty()) {
                 throw Exception("view should not be null!")
@@ -422,7 +434,7 @@ class ShowcaseManager private constructor(
                 isArrowVisible = isArrowVisible,
             )
 
-            return ShowcaseManager(showcaseModel = showcaseModel, resId = resId)
+            return ShowcaseManager(showcaseModel = showcaseModel, resId = resId, focusedView = getFocusedView())
         }
     }
 }
