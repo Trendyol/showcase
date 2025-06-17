@@ -5,7 +5,6 @@ import android.graphics.Path
 import android.graphics.RectF
 
 class RectangleShape(
-    private val statusBarDiff: Int,
     screenWidth: Int,
     screenHeight: Int,
     private val left: Float,
@@ -32,7 +31,7 @@ class RectangleShape(
 
     override fun draw(windowBackgroundColor: Int, windowBackgroundAlpha: Int, canvas: Canvas) {
         super.draw(windowBackgroundColor, windowBackgroundAlpha, canvas)
-        val rectF = RectF(left, top + statusBarDiff, right, bottom + statusBarDiff)
+        val rectF = RectF(left, top, right, bottom)
         path.addRoundRect(rectF, corners, Path.Direction.CW)
         canvas.drawPath(path, paint)
     }

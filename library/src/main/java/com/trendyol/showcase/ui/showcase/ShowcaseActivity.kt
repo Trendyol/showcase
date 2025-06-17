@@ -56,7 +56,7 @@ class ShowcaseActivity : AppCompatActivity() {
     }
 
     private fun updateStatusBar(isStatusBarVisible: Boolean) {
-        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
         if (isStatusBarVisible) {
             windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH

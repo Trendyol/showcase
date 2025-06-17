@@ -1,6 +1,5 @@
 package com.trendyol.showcase.util
 
-import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import com.trendyol.showcase.showcase.ShowcaseModel
@@ -51,8 +50,12 @@ internal object TooltipFieldUtil {
     ): Int = when (arrowPosition) {
         AbsoluteArrowPosition.UP -> bottom.toInt() + if (isStatusBarVisible) statusBarHeight else 0
         AbsoluteArrowPosition.DOWN -> {
-            val diff = if (isStatusBarVisible) -statusBarHeight else 0
-            (screenHeight - top + diff).toInt()
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                (screenHeight - top).toInt()
+            } else {
+                val diff = if (isStatusBarVisible) -statusBarHeight else 0
+                (screenHeight - top + diff).toInt()
+            }
         }
     }
 
@@ -66,8 +69,12 @@ internal object TooltipFieldUtil {
     ): Int = when (arrowPosition) {
         AbsoluteArrowPosition.UP -> bottom.toInt() + if (isStatusBarVisible) statusBarHeight else 0
         AbsoluteArrowPosition.DOWN -> {
-            val diff = if (isStatusBarVisible) -statusBarHeight else 0
-            (screenHeight - top + diff).toInt()
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                (screenHeight - top).toInt()
+            } else {
+                val diff = if (isStatusBarVisible) -statusBarHeight else 0
+                (screenHeight - top + diff).toInt()
+            }
         }
     }
 
