@@ -260,21 +260,31 @@ class SampleFragment : Fragment() {
                     .build()
                     .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
 
-                // Start moving the button after 2 seconds
-                view.postDelayed({
-                    moveButtonAround()
-                }, 1000)
+                // Start moving the button after 1 seconds
+                view.postDelayed({ moveButtonLeft() }, 1000)
+                view.postDelayed({ moveButtonRight() }, 2000)
             }
         }
     }
 
-    private fun moveButtonAround() {
+    private fun moveButtonLeft() {
         binding?.buttonMovingViewTest?.let { button ->
             val params = button.layoutParams as ConstraintLayout.LayoutParams
-            params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            params.topToBottom = R.id.button_slidable_content
             params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
             params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             params.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            button.layoutParams = params
+        }
+    }
+
+    private fun moveButtonRight() {
+        binding?.buttonMovingViewTest?.let { button ->
+            val params = button.layoutParams as ConstraintLayout.LayoutParams
+            params.topToBottom = R.id.button_slidable_content
+            params.startToStart =ConstraintLayout.LayoutParams.UNSET
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
             button.layoutParams = params
         }
     }

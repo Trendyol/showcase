@@ -165,10 +165,7 @@ class ShowcaseView @JvmOverloads constructor(
         }
     }
 
-    private fun getMarginFromBottom(
-        showcaseModel: ShowcaseModel,
-        arrowPosition: AbsoluteArrowPosition
-    ): Int {
+    private fun getMarginFromBottom(showcaseModel: ShowcaseModel, arrowPosition: AbsoluteArrowPosition): Int {
         return when (showcaseModel.highlightType) {
             HighlightType.CIRCLE -> TooltipFieldUtil.calculateMarginForCircle(
                 top = showcaseModel.topOfCircle(),
@@ -178,7 +175,6 @@ class ShowcaseView @JvmOverloads constructor(
                 isStatusBarVisible = showcaseModel.isStatusBarVisible,
                 screenHeight = resources.displayMetrics.heightPixels
             )
-
             HighlightType.RECTANGLE -> TooltipFieldUtil.calculateMarginForRectangle(
                 top = showcaseModel.rectF.top,
                 bottom = showcaseModel.rectF.bottom,
@@ -222,12 +218,9 @@ class ShowcaseView @JvmOverloads constructor(
                 HighlightType.CIRCLE -> {
                     newRectF.left = (it.horizontalCenter() - it.radius - it.highlightPadding)
                     newRectF.right = (it.horizontalCenter() + it.radius + it.highlightPadding)
-                    newRectF.top =
-                        (it.verticalCenter() - it.radius - it.highlightPadding + statusBarHeight())
-                    newRectF.bottom =
-                        (it.verticalCenter() + it.radius + it.highlightPadding - statusBarHeight())
+                    newRectF.top = (it.verticalCenter() - it.radius - it.highlightPadding + statusBarHeight())
+                    newRectF.bottom = (it.verticalCenter() + it.radius + it.highlightPadding - statusBarHeight())
                 }
-
                 HighlightType.RECTANGLE -> {
                     newRectF.left -= (it.highlightPadding / 2)
                     newRectF.right += (it.highlightPadding / 2)
