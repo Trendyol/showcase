@@ -25,7 +25,7 @@ import com.trendyol.showcase.util.toRectF
 class ShowcaseManager private constructor(
     private val showcaseModel: ShowcaseModel,
     @StyleRes val resId: Int?,
-    private val focusedView: View?
+    private val focusViews: Array<out View>?
 ) {
 
     fun show(
@@ -47,9 +47,10 @@ class ShowcaseManager private constructor(
         val intent = Intent(activity, ShowcaseActivity::class.java)
         val model = if (resId != null) readFromStyle(activity, resId) else showcaseModel
         intent.putExtra(ShowcaseActivity.BUNDLE_KEY, model)
-        focusedView?.let { 
-            ShowcaseViewRegistry.registerView(it)
-            intent.putExtra(ShowcaseActivity.FOCUSED_VIEW_ID_KEY, it.id) 
+        focusViews?.forEach { ShowcaseViewRegistry.registerView(it) }
+        focusViews?.let { views ->
+            val ids = ArrayList(views.map { it.id })
+            intent.putIntegerArrayListExtra(ShowcaseActivity.FOCUSED_VIEW_IDS_KEY, ids)
         }
 
         if (requestCode == null) {
@@ -79,9 +80,10 @@ class ShowcaseManager private constructor(
             val intent = Intent(activity, ShowcaseActivity::class.java)
             val model = if (resId != null) readFromStyle(activity, resId) else showcaseModel
             intent.putExtra(ShowcaseActivity.BUNDLE_KEY, model)
-            focusedView?.let { 
-                ShowcaseViewRegistry.registerView(it)
-                intent.putExtra(ShowcaseActivity.FOCUSED_VIEW_ID_KEY, it.id) 
+            focusViews?.forEach { ShowcaseViewRegistry.registerView(it) }
+            focusViews?.let { views ->
+                val ids = ArrayList(views.map { it.id })
+                intent.putIntegerArrayListExtra(ShowcaseActivity.FOCUSED_VIEW_IDS_KEY, ids)
             }
 
             if (requestCode == null) {
@@ -258,7 +260,7 @@ class ShowcaseManager private constructor(
          *
          * @param resId font resId
          */
-        fun descriptionTextFontFamilyResId(@FontRes resId: Int) = apply { 
+        fun descriptionTextFontFamilyResId(@FontRes resId: Int) = apply {
             descriptionTextFontFamilyResId = resId
         }
 
@@ -373,8 +375,6 @@ class ShowcaseManager private constructor(
         fun setSlidableContentList(slidableContentList: List<SlidableContent>) =
             apply { this.slidableContentList = slidableContentList }
 
-        internal fun getFocusedView(): View? = focusViews?.firstOrNull()
-
         fun build(): ShowcaseManager {
             if (focusViews.isNullOrEmpty()) {
                 throw Exception("view should not be null!")
@@ -434,7 +434,11 @@ class ShowcaseManager private constructor(
                 isArrowVisible = isArrowVisible,
             )
 
-            return ShowcaseManager(showcaseModel = showcaseModel, resId = resId, focusedView = getFocusedView())
+            return ShowcaseManager(
+                showcaseModel = showcaseModel,
+                resId = resId,
+                focusViews = focusViews,
+            )
         }
     }
 }

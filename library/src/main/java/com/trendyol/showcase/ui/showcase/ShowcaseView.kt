@@ -36,8 +36,8 @@ class ShowcaseView @JvmOverloads constructor(
     private val binding = LayoutShowcaseBinding.inflate(LayoutInflater.from(context), this, true)
     private var showcaseModel: ShowcaseModel? = null
     private var clickListener: ((ActionType, Int) -> (Unit))? = null
-    private var focusedView: View? = null
-    private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+    private val focusedViews = mutableListOf<View>()
+    private val globalLayoutListeners = mutableMapOf<View, ViewTreeObserver.OnGlobalLayoutListener>()
 
     override fun dispatchDraw(canvas: Canvas) {
         val showcaseModel = this.showcaseModel ?: return super.dispatchDraw(canvas)
@@ -97,18 +97,24 @@ class ShowcaseView @JvmOverloads constructor(
         binding.tooltipView.setClickListener(listener)
     }
 
-    fun setFocusedViewId(viewId: Int) {
-        // Get the focused view from the global reference
-        focusedView = ShowcaseViewRegistry.getFocusedView(viewId)
-        observeFocusedView()
+    fun setFocusedViewIds(viewIds: List<Int>) {
+        removeFocusedViewObserver()
+        focusedViews.clear()
+        viewIds.forEach { id ->
+            ShowcaseViewRegistry.getFocusedView(id)?.let { view ->
+                focusedViews.add(view)
+            }
+        }
+        observeFocusedViews()
     }
 
-    private fun observeFocusedView() {
-        focusedView?.let { view ->
-            globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+    private fun observeFocusedViews() {
+        focusedViews.forEach { view ->
+            val listener = ViewTreeObserver.OnGlobalLayoutListener {
                 updateTooltipPosition(view)
             }
-            view.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+            globalLayoutListeners[view] = listener
+            view.viewTreeObserver.addOnGlobalLayoutListener(listener)
         }
     }
 
@@ -124,12 +130,11 @@ class ShowcaseView @JvmOverloads constructor(
     }
 
     private fun removeFocusedViewObserver() {
-        focusedView?.let { view ->
-            globalLayoutListener?.let {
-                view.viewTreeObserver.removeOnGlobalLayoutListener(it)
-            }
+        globalLayoutListeners.forEach { (view, listener) ->
+            view.viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
-        globalLayoutListener = null
+        globalLayoutListeners.clear()
+        focusedViews.clear()
     }
 
     private fun bind() {
