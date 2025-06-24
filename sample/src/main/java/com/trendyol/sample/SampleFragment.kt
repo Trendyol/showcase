@@ -209,6 +209,9 @@ class SampleFragment : Fragment() {
                     .statusBarVisible(isStatusBarVisible)
                     .build()
                     .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
+
+                textView.postDelayed({ textView.text = "Showcase Sample With A longer text" }, 2000)
+                textView.postDelayed({ textView.text = "Showcase Sample With A longer text\nAnd a new line!" }, 4000)
             }
 
             buttonSlidableContent.setOnClickListener {
