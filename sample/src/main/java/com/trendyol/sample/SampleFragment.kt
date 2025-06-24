@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.color
@@ -208,6 +209,9 @@ class SampleFragment : Fragment() {
                     .statusBarVisible(isStatusBarVisible)
                     .build()
                     .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
+
+                textView.postDelayed({ textView.text = "Showcase Sample With A longer text" }, 2000)
+                textView.postDelayed({ textView.text = "Showcase Sample With A longer text\nAnd a new line!" }, 4000)
             }
 
             buttonSlidableContent.setOnClickListener {
@@ -242,6 +246,49 @@ class SampleFragment : Fragment() {
                     .build()
                     .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
             }
+
+            buttonMovingViewTest.setOnClickListener {
+                // Show showcase on the movable button
+                ShowcaseManager.Builder()
+                    .focus(buttonMovingViewTest)
+                    .titleText("Watch me follow!")
+                    .descriptionText("This tooltip will follow the button as it moves")
+                    .titleTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    .backgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                    .showCloseButton(true)
+                    .cancellableFromOutsideTouch(true)
+                    .arrowPosition(ArrowPosition.AUTO)
+                    .highlightType(HighlightType.RECTANGLE)
+                    .statusBarVisible(isStatusBarVisible)
+                    .build()
+                    .show(this@SampleFragment, REQUEST_CODE_SHOWCASE_CLICKED, medusaLifecycleOwner)
+
+                // Start moving the button after 1 seconds
+                view.postDelayed({ moveButtonLeft() }, 1000)
+                view.postDelayed({ moveButtonRight() }, 2000)
+            }
+        }
+    }
+
+    private fun moveButtonLeft() {
+        binding?.buttonMovingViewTest?.let { button ->
+            val params = button.layoutParams as ConstraintLayout.LayoutParams
+            params.topToBottom = R.id.button_slidable_content
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            params.endToEnd = ConstraintLayout.LayoutParams.UNSET
+            button.layoutParams = params
+        }
+    }
+
+    private fun moveButtonRight() {
+        binding?.buttonMovingViewTest?.let { button ->
+            val params = button.layoutParams as ConstraintLayout.LayoutParams
+            params.topToBottom = R.id.button_slidable_content
+            params.startToStart =ConstraintLayout.LayoutParams.UNSET
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+            button.layoutParams = params
         }
     }
 

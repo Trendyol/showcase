@@ -18,12 +18,14 @@ import com.trendyol.showcase.ui.slidablecontent.SlidableContent
 import com.trendyol.showcase.ui.tooltip.ArrowPosition
 import com.trendyol.showcase.ui.tooltip.TextPosition
 import com.trendyol.showcase.util.Constants
+import com.trendyol.showcase.util.ShowcaseViewRegistry
 import com.trendyol.showcase.util.TooltipFieldUtil
 import com.trendyol.showcase.util.toRectF
 
 class ShowcaseManager private constructor(
     private val showcaseModel: ShowcaseModel,
-    @StyleRes val resId: Int?
+    @StyleRes val resId: Int?,
+    private val focusViews: Array<out View>?
 ) {
 
     fun show(
@@ -45,6 +47,11 @@ class ShowcaseManager private constructor(
         val intent = Intent(activity, ShowcaseActivity::class.java)
         val model = if (resId != null) readFromStyle(activity, resId) else showcaseModel
         intent.putExtra(ShowcaseActivity.BUNDLE_KEY, model)
+        focusViews?.forEach { ShowcaseViewRegistry.registerView(it) }
+        focusViews?.let { views ->
+            val ids = ArrayList(views.map { it.id })
+            intent.putIntegerArrayListExtra(ShowcaseActivity.FOCUSED_VIEW_IDS_KEY, ids)
+        }
 
         if (requestCode == null) {
             activity.startActivity(intent)
@@ -73,6 +80,11 @@ class ShowcaseManager private constructor(
             val intent = Intent(activity, ShowcaseActivity::class.java)
             val model = if (resId != null) readFromStyle(activity, resId) else showcaseModel
             intent.putExtra(ShowcaseActivity.BUNDLE_KEY, model)
+            focusViews?.forEach { ShowcaseViewRegistry.registerView(it) }
+            focusViews?.let { views ->
+                val ids = ArrayList(views.map { it.id })
+                intent.putIntegerArrayListExtra(ShowcaseActivity.FOCUSED_VIEW_IDS_KEY, ids)
+            }
 
             if (requestCode == null) {
                 fragment.startActivity(intent)
@@ -248,7 +260,7 @@ class ShowcaseManager private constructor(
          *
          * @param resId font resId
          */
-        fun descriptionTextFontFamilyResId(@FontRes resId: Int) = apply { 
+        fun descriptionTextFontFamilyResId(@FontRes resId: Int) = apply {
             descriptionTextFontFamilyResId = resId
         }
 
@@ -422,7 +434,11 @@ class ShowcaseManager private constructor(
                 isArrowVisible = isArrowVisible,
             )
 
-            return ShowcaseManager(showcaseModel = showcaseModel, resId = resId)
+            return ShowcaseManager(
+                showcaseModel = showcaseModel,
+                resId = resId,
+                focusViews = focusViews,
+            )
         }
     }
 }

@@ -71,7 +71,8 @@ internal object TooltipViewStateFactory {
             titleTextFontFamilyResId = null,
             showDuration = 2000L,
             isShowcaseViewVisibleIndefinitely = true,
-            isArrowVisible = isArrowVisible
+            isArrowVisible = isArrowVisible,
+            cancellableFromScroll = false,
         )
         return provideTooltipViewState(showcaseModel, absoluteArrowPosition, arrowMargin)
     }

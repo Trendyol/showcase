@@ -6,17 +6,19 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.FontRes
 import androidx.annotation.LayoutRes
+import androidx.core.graphics.toRect
 import com.trendyol.showcase.ui.slidablecontent.SlidableContent
 import com.trendyol.showcase.ui.showcase.HighlightType
 import com.trendyol.showcase.ui.tooltip.ArrowPosition
 import com.trendyol.showcase.ui.tooltip.TextPosition
+import com.trendyol.showcase.util.TooltipFieldUtil
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ShowcaseModel(
-    val rectF: RectF,
-    val highlightedViewsRectFList: List<RectF>,
-    val radius: Float,
+    var rectF: RectF,
+    var highlightedViewsRectFList: List<RectF>,
+    var radius: Float,
     val titleText: String,
     val descriptionText: CharSequence,
     @ColorInt val titleTextColor: Int,
@@ -63,4 +65,16 @@ data class ShowcaseModel(
 
     fun bottomOfCircle() = verticalCenter() + radius
     fun topOfCircle() = verticalCenter() - radius
+
+    fun updatePositions(newRects: List<RectF>) {
+        if (newRects.isNotEmpty()) {
+            val unionRect = RectF(newRects[0])
+            for (i in 1 until newRects.size) {
+                unionRect.union(newRects[i])
+            }
+            rectF = unionRect
+            highlightedViewsRectFList = newRects
+            radius = TooltipFieldUtil.calculateRadius(unionRect.toRect())
+        }
+    }
 }

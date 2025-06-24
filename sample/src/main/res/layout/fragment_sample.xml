@@ -72,10 +72,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Showcase - Slidable Content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_moving_view_test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_bottom" />
+
+    <Button
+        android:id="@+id/button_moving_view_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Moving View"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="@dimen/showcase_margin_16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_slidable_content" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"

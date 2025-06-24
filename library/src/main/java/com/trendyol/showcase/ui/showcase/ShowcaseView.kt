@@ -2,9 +2,12 @@ package com.trendyol.showcase.ui.showcase
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,6 +21,7 @@ import com.trendyol.showcase.ui.tooltip.AbsoluteArrowPosition
 import com.trendyol.showcase.ui.tooltip.TooltipViewState
 import com.trendyol.showcase.util.ActionType
 import com.trendyol.showcase.util.OnTouchClickListener
+import com.trendyol.showcase.util.ShowcaseViewRegistry
 import com.trendyol.showcase.util.TooltipFieldUtil
 import com.trendyol.showcase.util.getHeightInPixels
 import com.trendyol.showcase.util.isRTL
@@ -25,6 +29,7 @@ import com.trendyol.showcase.util.screenWidth
 import com.trendyol.showcase.util.shape.CircleShape
 import com.trendyol.showcase.util.shape.RectangleShape
 import com.trendyol.showcase.util.statusBarHeight
+import com.trendyol.showcase.util.toRectF
 
 class ShowcaseView @JvmOverloads constructor(
     context: Context,
@@ -34,6 +39,8 @@ class ShowcaseView @JvmOverloads constructor(
     private val binding = LayoutShowcaseBinding.inflate(LayoutInflater.from(context), this, true)
     private var showcaseModel: ShowcaseModel? = null
     private var clickListener: ((ActionType, Int) -> (Unit))? = null
+    private val focusedViews = mutableListOf<View>()
+    private val globalLayoutListeners = mutableMapOf<View, ViewTreeObserver.OnGlobalLayoutListener>()
     private var insetTop: Int = 0
     private var insetBottom: Int = 0
 
@@ -71,6 +78,7 @@ class ShowcaseView @JvmOverloads constructor(
                         radius = model.radius + model.highlightPadding
                     )
                 }
+
                 HighlightType.RECTANGLE -> {
                     RectangleShape(
                         screenWidth = width,
@@ -97,6 +105,11 @@ class ShowcaseView @JvmOverloads constructor(
         super.onAttachedToWindow()
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        removeFocusedViewObserver()
+    }
+
     fun setShowcaseModel(model: ShowcaseModel?) {
         showcaseModel = model
         bind()
@@ -107,11 +120,53 @@ class ShowcaseView @JvmOverloads constructor(
         binding.tooltipView.setClickListener(listener)
     }
 
+    fun setFocusedViewIds(viewIds: List<Int>) {
+        removeFocusedViewObserver()
+        focusedViews.clear()
+        viewIds.forEach { id ->
+            ShowcaseViewRegistry.getFocusedView(id)?.let { view ->
+                focusedViews.add(view)
+            }
+        }
+        observeFocusedViews()
+    }
+
+    private fun observeFocusedViews() {
+        focusedViews.forEach { view ->
+            val listener = ViewTreeObserver.OnGlobalLayoutListener {
+                updateTooltipPosition()
+            }
+            globalLayoutListeners[view] = listener
+            view.viewTreeObserver.addOnGlobalLayoutListener(listener)
+        }
+    }
+
+    private fun updateTooltipPosition() {
+        showcaseModel?.let { model ->
+            val rects = focusedViews.map {
+                val rect = Rect()
+                it.getGlobalVisibleRect(rect)
+                rect.toRectF()
+            }
+            model.updatePositions(rects)
+            bind()
+        }
+    }
+
+    private fun removeFocusedViewObserver() {
+        globalLayoutListeners.forEach { (view, listener) ->
+            view.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
+        globalLayoutListeners.clear()
+        focusedViews.clear()
+    }
+
     private fun bind() {
         val showcaseModel = this.showcaseModel ?: return
 
         listenClickEvents()
-        val arrowPosition = TooltipFieldUtil.decideArrowPosition(showcaseModel, resources.getHeightInPixels())
+        val arrowPosition =
+            TooltipFieldUtil.decideArrowPosition(showcaseModel, resources.getHeightInPixels())
         val arrowStartMargin = if (context.isRTL()) {
             context.screenWidth() - showcaseModel.horizontalCenter().toInt()
         } else {

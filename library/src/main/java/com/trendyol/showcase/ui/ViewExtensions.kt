@@ -1,5 +1,7 @@
 package com.trendyol.showcase.ui
 
+import android.app.Activity
+import android.content.Context
 import android.content.res.ColorStateList
 import android.util.TypedValue
 import android.view.View
@@ -47,6 +49,7 @@ internal fun ImageView.layoutMarginStart(margin: Int, percentage: Int?) {
         } ?: run {
             this.marginStart = margin
         }
+        this@layoutMarginStart.layoutParams = this
     }
 }
 
@@ -63,5 +66,13 @@ internal fun ImageView.setTint(@ColorInt color: Int) {
 }
 
 internal fun ImageView.loadImage(imageUrl: String) {
-    Glide.with(context).load(imageUrl).into(this)
+    Glide.with(getNotDestroyedContext() ?: return)
+        .load(imageUrl)
+        .into(this)
+        .clearOnDetach()
+}
+
+private fun View.getNotDestroyedContext(): Context? {
+    val isNotDestroyedActivityContext = (context as? Activity)?.isDestroyed != true
+    return context?.takeIf { isNotDestroyedActivityContext }
 }
