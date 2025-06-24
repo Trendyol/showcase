@@ -111,20 +111,21 @@ class ShowcaseView @JvmOverloads constructor(
     private fun observeFocusedViews() {
         focusedViews.forEach { view ->
             val listener = ViewTreeObserver.OnGlobalLayoutListener {
-                updateTooltipPosition(view)
+                updateTooltipPosition()
             }
             globalLayoutListeners[view] = listener
             view.viewTreeObserver.addOnGlobalLayoutListener(listener)
         }
     }
 
-    private fun updateTooltipPosition(targetView: View) {
-        val rect = Rect()
-        targetView.getGlobalVisibleRect(rect)
+    private fun updateTooltipPosition() {
         showcaseModel?.let { model ->
-            val newRectF = rect.toRectF()
-            val newRadius = TooltipFieldUtil.calculateRadius(rect)
-            model.updatePosition(newRectF, newRadius)
+            val rects = focusedViews.map {
+                val rect = Rect()
+                it.getGlobalVisibleRect(rect)
+                rect.toRectF()
+            }
+            model.updatePositions(rects)
             bind()
         }
     }
