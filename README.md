@@ -1,3 +1,5 @@
+
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Trendyol/showcase/badge)](https://scorecard.dev/viewer/?uri=github.com/Trendyol/showcase)
 # Showcase
 
 [![](https://jitpack.io/v/trendyol/showcase.svg)](https://jitpack.io/#trendyol/showcase)
