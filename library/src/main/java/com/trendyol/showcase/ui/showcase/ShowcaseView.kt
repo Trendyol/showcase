@@ -3,6 +3,7 @@ package com.trendyol.showcase.ui.showcase
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.RectF
+import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -45,7 +46,7 @@ class ShowcaseView @JvmOverloads constructor(
             // Always apply the same padding regardless of API level
             view.updatePadding(
                 top = systemBars.top,
-                bottom = systemBars.bottom,
+                bottom = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) 0 else systemBars.bottom,
                 left = systemBars.left,
                 right = systemBars.right
             )
